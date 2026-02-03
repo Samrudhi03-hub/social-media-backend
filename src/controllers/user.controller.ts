@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createUser } from "../services/user.service";
 import { findUserByEmail } from "../services/user.service";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 export const signup = async (req: Request, res: Response) => {
@@ -46,10 +47,18 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
-      message: "Login successful",
-      data: user,
-    });
+    const token = jwt.sign(
+  { userId: user.id },
+  process.env.JWT_SECRET as string,
+  { expiresIn: "1d" }
+);
+
+res.status(200).json({
+  message: "Login successful",
+  token,
+  data: user,
+});
+
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong",
