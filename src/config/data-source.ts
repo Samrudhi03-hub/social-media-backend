@@ -5,6 +5,7 @@ import { User } from "../entities/user.entity";
 import { Post } from "../entities/post.entity";
 import { Like } from "../entities/like.entity";
 import { Comment } from "../entities/comment.entity";
+import { Follow } from "../entities/follow.entity";
 
 dotenv.config();
 
@@ -19,5 +20,5 @@ export const AppDataSource = new DataSource({
   synchronize: true, // auto-create tables (good for beginners)
   logging: false,
 
-  entities: [User, Post, Like, Comment],
+  entities: [User, Post, Like, Comment, Follow],
 });

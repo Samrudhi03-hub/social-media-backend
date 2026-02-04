@@ -27,7 +27,7 @@ export class Post {
   commentsCount!: number;
 
   @Column({ type: "timestamp", nullable: true })
-  deletedAt!: Date;
+  deletedAt!: Date | null;
 
   @CreateDateColumn()
   createdAt!: Date;
