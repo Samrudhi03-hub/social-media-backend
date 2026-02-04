@@ -2,6 +2,9 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 import { User } from "../entities/user.entity";
+import { Post } from "../entities/post.entity";
+import { Like } from "../entities/like.entity";
+import { Comment } from "../entities/comment.entity";
 
 dotenv.config();
 
@@ -16,5 +19,5 @@ export const AppDataSource = new DataSource({
   synchronize: true, // auto-create tables (good for beginners)
   logging: false,
 
-  entities: [User],
+  entities: [User, Post, Like, Comment],
 });
