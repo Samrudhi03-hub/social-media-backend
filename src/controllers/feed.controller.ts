@@ -11,9 +11,10 @@ export const getFeedHandler = async (req: Request, res: Response) => {
     const posts = await getFeed(user.userId, page, limit);
 
     res.json({
-      message: "Feed fetched",
-      data: posts,
-    });
+    message: (req as any).t("feedFetched"),
+    data: posts,
+  });
+
   } catch {
     res.status(500).json({ message: "Error fetching feed" });
   }

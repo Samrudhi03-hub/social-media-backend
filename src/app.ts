@@ -6,18 +6,66 @@ import likeRoutes from "./routes/like.routes";
 import commentRoutes from "./routes/comment.routes";
 import followRoutes from "./routes/follow.routes";
 import feedRoutes from "./routes/feed.routes";
+import notificationRoutes from "./routes/notification.routes";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
+import morgan from "morgan";
+import { logger } from "./config/logger";
+import rateLimit from "express-rate-limit";
+import slowDown from "express-slow-down";
+import { i18next, middleware as i18nMiddleware } from "./config/i18n";
 
 
 const app = express();
 
+
 // Middleware to read JSON body
 app.use(express.json());
+
+app.use(i18nMiddleware.handle(i18next));
+
+
+app.use(
+  morgan("dev", {
+    stream: {
+      write: (message: string) => {
+        logger.info(message.trim());
+      },
+    },
+  })
+);
+
+// Rate Limiter
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 100, // allow only 100 requests
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Too many requests, please try again later.",
+});
+
+
+// Slow Down
+const speedLimiter = slowDown({
+  windowMs: 60 * 1000,
+  delayAfter: 50, // start slowing after 50 requests
+  delayMs: () => 500, // add 500ms delay
+});
+
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use(limiter);
+app.use(speedLimiter);
+
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/follow", followRoutes);
 app.use("/api/feed", feedRoutes);
+app.use("/api/notifications", notificationRoutes);
+
 
 
 
@@ -33,11 +81,3 @@ app.get("/", (req, res) => {
 export default app;
 
 
-//tokens - 
-// alice- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MDIxMTQxMiwiZXhwIjoxNzcwMjk3ODEyfQ.TjAClbog1CO3cTTnrEorIqCUoewwjHqXrZlw4Mwk9eE
-
-// bob - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3MDIxMDYyOSwiZXhwIjoxNzcwMjk3MDI5fQ.B0G5rKE_BihCE8HQp3Fs532-prB2ETRg4jUsccc0_VI
-
-// charlie - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MDIxMDY1MiwiZXhwIjoxNzcwMjk3MDUyfQ.Vg__QHwazB8RNBsNT93mrbqSqDRYO0r3f5bTmWsGqlI
-
-// diana - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTc3MDIxMDUyNCwiZXhwIjoxNzcwMjk2OTI0fQ.uIVxjBEJvvpRATDaoFJiF2ieAI5OXbKhbGL2KBqHqVI

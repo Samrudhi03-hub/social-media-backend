@@ -1,6 +1,7 @@
 import { AppDataSource } from "../config/data-source";
 import { Like } from "../entities/like.entity";
 import { Post } from "../entities/post.entity";
+import { createNotification } from "./notification.service";
 
 const likeRepo = AppDataSource.getRepository(Like);
 const postRepo = AppDataSource.getRepository(Post);
@@ -24,6 +25,15 @@ export const toggleLike = async (postId: number, userId: number) => {
     await likeRepo.save(like);
     post.likesCount += 1;
     await postRepo.save(post);
+    
+    if (post.userId !== userId) {
+    await createNotification(
+      post.userId,
+      userId,
+      "like",
+      "Someone liked your post"
+    );
+  }
     return { liked: true };
   }
 };
