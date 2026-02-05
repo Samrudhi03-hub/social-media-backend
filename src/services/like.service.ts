@@ -25,15 +25,15 @@ export const toggleLike = async (postId: number, userId: number) => {
     await likeRepo.save(like);
     post.likesCount += 1;
     await postRepo.save(post);
-    
+
     if (post.userId !== userId) {
-    await createNotification(
-      post.userId,
-      userId,
-      "like",
-      "Someone liked your post"
-    );
-  }
+      await createNotification(
+        post.userId,
+        userId,
+        "like",
+        "Someone liked your post",
+      );
+    }
     return { liked: true };
   }
 };

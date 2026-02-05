@@ -23,7 +23,6 @@ const router = Router();
  *         description: Toggle like
  */
 
-
 router.post("/:postId", authMiddleware, likePost);
 
 export default router;

@@ -15,15 +15,12 @@ import rateLimit from "express-rate-limit";
 import slowDown from "express-slow-down";
 import { i18next, middleware as i18nMiddleware } from "./config/i18n";
 
-
 const app = express();
-
 
 // Middleware to read JSON body
 app.use(express.json());
 
 app.use(i18nMiddleware.handle(i18next));
-
 
 app.use(
   morgan("dev", {
@@ -32,7 +29,7 @@ app.use(
         logger.info(message.trim());
       },
     },
-  })
+  }),
 );
 
 // Rate Limiter
@@ -44,14 +41,12 @@ const limiter = rateLimit({
   message: "Too many requests, please try again later.",
 });
 
-
 // Slow Down
 const speedLimiter = slowDown({
   windowMs: 60 * 1000,
   delayAfter: 50, // start slowing after 50 requests
   delayMs: () => 500, // add 500ms delay
 });
-
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -66,9 +61,6 @@ app.use("/api/follow", followRoutes);
 app.use("/api/feed", feedRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-
-
-
 // Test route
 app.get("/protected", authMiddleware, (req, res) => {
   res.json({ message: "You accessed protected route" });
@@ -79,5 +71,3 @@ app.get("/", (req, res) => {
 });
 
 export default app;
-
-

@@ -1,14 +1,13 @@
 import { AppDataSource } from "../config/data-source";
 import { Notification } from "../entities/notification.entity";
 
-const notificationRepo =
-  AppDataSource.getRepository(Notification);
+const notificationRepo = AppDataSource.getRepository(Notification);
 
 export const createNotification = async (
   receiverId: number,
   senderId: number,
   type: "like" | "comment" | "follow",
-  message: string
+  message: string,
 ) => {
   const notification = notificationRepo.create({
     receiverId,
@@ -23,7 +22,7 @@ export const createNotification = async (
 export const getNotifications = async (
   userId: number,
   page: number,
-  limit: number
+  limit: number,
 ) => {
   return await notificationRepo.find({
     where: { receiverId: userId },

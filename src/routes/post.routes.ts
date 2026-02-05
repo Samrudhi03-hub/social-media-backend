@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { createPostHandler, deletePostHandler } from "../controllers/post.controller";
+import {
+  createPostHandler,
+  deletePostHandler,
+} from "../controllers/post.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -29,7 +32,6 @@ const router = Router();
  *       201:
  *         description: Post created
  */
-
 
 router.post("/", authMiddleware, createPostHandler);
 

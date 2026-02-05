@@ -17,7 +17,6 @@ const router = Router();
  *         description: Feed fetched
  */
 
-
 router.get("/", authMiddleware, getFeedHandler);
 
 export default router;

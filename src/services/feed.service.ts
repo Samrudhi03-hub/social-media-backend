@@ -6,11 +6,7 @@ import { In, IsNull } from "typeorm";
 const postRepo = AppDataSource.getRepository(Post);
 const followRepo = AppDataSource.getRepository(Follow);
 
-export const getFeed = async (
-  userId: number,
-  page: number,
-  limit: number
-) => {
+export const getFeed = async (userId: number, page: number, limit: number) => {
   const follows = await followRepo.find({
     where: { followerId: userId },
   });

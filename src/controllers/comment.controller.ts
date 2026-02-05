@@ -6,11 +6,7 @@ export const addCommentHandler = async (req: Request, res: Response) => {
     const user = (req as any).user;
     const postId = Number(req.params.postId);
 
-    const comment = await addComment(
-      postId,
-      user.userId,
-      req.body.content
-    );
+    const comment = await addComment(postId, user.userId, req.body.content);
 
     res.status(201).json({
       message: "Comment added",

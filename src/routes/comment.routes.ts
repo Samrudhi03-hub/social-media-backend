@@ -33,7 +33,6 @@ const router = Router();
  *         description: Comment added
  */
 
-
 router.post("/:postId", authMiddleware, addCommentHandler);
 
 export default router;

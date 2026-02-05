@@ -20,7 +20,6 @@ const router = Router();
  *         description: Notifications fetched
  */
 
-
 // Get all notifications of logged-in user
 router.get("/", authMiddleware, getMyNotifications);
 

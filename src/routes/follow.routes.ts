@@ -23,7 +23,6 @@ const router = Router();
  *         description: Toggle follow
  */
 
-
 router.post("/:userId", authMiddleware, followUser);
 
 export default router;

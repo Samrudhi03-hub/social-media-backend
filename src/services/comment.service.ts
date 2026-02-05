@@ -9,7 +9,7 @@ const postRepo = AppDataSource.getRepository(Post);
 export const addComment = async (
   postId: number,
   userId: number,
-  content: string
+  content: string,
 ) => {
   const comment = commentRepo.create({ postId, userId, content });
   await commentRepo.save(comment);
@@ -21,13 +21,13 @@ export const addComment = async (
     await postRepo.save(post);
 
     if (post.userId !== userId) {
-    await createNotification(
-      post.userId,
-      userId,
-      "comment",
-      "Someone commented on your post"
-    );
-  }
+      await createNotification(
+        post.userId,
+        userId,
+        "comment",
+        "Someone commented on your post",
+      );
+    }
   }
 
   return comment;

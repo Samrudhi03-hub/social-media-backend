@@ -59,8 +59,6 @@ router.post("/signup", signup);
  *         description: Login successful
  */
 
-
 router.post("/login", login);
-
 
 export default router;
