@@ -18,7 +18,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 
-  synchronize: true, // auto-create tables (good for beginners)
+  synchronize: true, // auto-create tables
   logging: false,
 
   entities: [User, Post, Like, Comment, Follow, Notification],
